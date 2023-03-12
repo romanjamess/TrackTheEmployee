@@ -1,4 +1,5 @@
-const inquirer = require("inquirer")
+const inquirer = require("inquirer");
+const connection = require("./db/connection");
 const db = require('./db/connection');
 
 
@@ -32,7 +33,7 @@ async function app() {
     if (answer.choice === 'Add a department') {
         addDepartment()
     }
-    if (answer.choice === 'Add a Role') {
+    if (answer.choice === 'Add a role') {
         addRole()
     }
     if (answer.choice === 'Add an employee'){
@@ -76,13 +77,34 @@ async function addRole() {
     const answer = await inquirer.prompt([
         {
             type: 'input',
-            name: 'addRole',
+            name: 'roles',
             message: 'What is the name of the role?',
         },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the salary of the role?',
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'Which department does the role belong to',
+            choices: ["Engineering", "Finance", "Legal", "Sales"],
+        },
     ])
+    .then(function(answer){
+        // console.log(answer);
+        connection.query("INSERT INTO role (title, salary, department_id) VALUES ?",{
+            roles: answer.roles,
+            salary: answer.salary,
+            department: answer.department_id,
+        }),function (err) {
+            if (err) throw err;
+        }
+    });
   
-    const results = await db.promise().query('INSERT INTO department (name) VALUES (?)', answer.addDepartment)
-    console.table(results)
+    // const results = await db.promise().query('INSERT INTO role (title, salary, department_id) VALUES (?)', answer.roles, answer.salary, answer.department)
+    // console.table(results)
     app()
     
 }
@@ -106,16 +128,16 @@ async function addEmployee() {
             choices: ["Engineering", "Finance", "Legal", "Sales"],
         },
         {
-            type: 'input',
+            type: 'list',
             name: 'manager',
             message: 'Who is the employees manager?',
             choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
         }
     ])
   
-    // const results = await db.promise().query('INSERT INTO department (name) VALUES (?)', answer.addDepartment)
-    // console.table(results)
-    // app()
+    const results = await db.promise().query('INSERT INTO department (name) VALUES (?)', answer.addDepartment)
+    console.table(results)
+    app()
     
 }
 
