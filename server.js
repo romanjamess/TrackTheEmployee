@@ -32,6 +32,12 @@ async function app() {
     if (answer.choice === 'Add a department') {
         addDepartment()
     }
+    if (answer.choice === 'Add a Role') {
+        addRole()
+    }
+    if (answer.choice === 'Add an employee'){
+        addEmployee()
+    }
 
 }
 async function viewDepartments() {
@@ -64,6 +70,52 @@ async function addDepartment() {
     const results = await db.promise().query('INSERT INTO department (name) VALUES (?)', answer.addDepartment)
     console.table(results)
     app()
+    
+}
+async function addRole() {
+    const answer = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addRole',
+            message: 'What is the name of the role?',
+        },
+    ])
+  
+    const results = await db.promise().query('INSERT INTO department (name) VALUES (?)', answer.addDepartment)
+    console.table(results)
+    app()
+    
+}
+
+async function addEmployee() {
+    const answer = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: 'What is the employees first name?',
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: 'What is the employees last name?',
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: 'What is the employees role?',
+            choices: ["Engineering", "Finance", "Legal", "Sales"],
+        },
+        {
+            type: 'input',
+            name: 'manager',
+            message: 'Who is the employees manager?',
+            choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
+        }
+    ])
+  
+    // const results = await db.promise().query('INSERT INTO department (name) VALUES (?)', answer.addDepartment)
+    // console.table(results)
+    // app()
     
 }
 
