@@ -89,15 +89,15 @@ async function addRole() {
             type: 'list',
             name: 'department',
             message: 'Which department does the role belong to',
-            choices: ["Engineering", "Finance", "Legal", "Sales"],
+            choices: [1, 2, 3, 4],
         },
     ])
     .then(function(answer){
         // console.log(answer);
-        connection.query("INSERT INTO role (title, salary, department_id) VALUES ?",{
-            roles: answer.roles,
+        connection.query("INSERT INTO role SET ?",{
+            title: answer.roles,
             salary: answer.salary,
-            department: answer.department_id,
+            department_id: answer.department,
         }),function (err) {
             if (err) throw err;
         }
@@ -125,7 +125,7 @@ async function addEmployee() {
             type: 'list',
             name: 'role',
             message: 'What is the employees role?',
-            choices: ["Engineering", "Finance", "Legal", "Sales"],
+            choices: [1, 2, 3, 4],
         },
         {
             type: 'list',
@@ -133,10 +133,20 @@ async function addEmployee() {
             message: 'Who is the employees manager?',
             choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
         }
-    ])
+    ]) .then(function(answer){
+        // console.log(answer);
+        connection.query("INSERT INTO role SET ?",{
+            first_name: answer.firstName,
+            last_name: answer.lastName,
+            role_id: answer.role,
+            manager_id: answer.manager,
+        }),function (err) {
+            if (err) throw err;
+        }
+    });
   
-    const results = await db.promise().query('INSERT INTO department (name) VALUES (?)', answer.addDepartment)
-    console.table(results)
+    // const results = await db.promise().query('INSERT INTO department (first_name, last_name) SET (?)', answer.firstName, answer.lastName)
+    // console.table(results)
     app()
     
 }
