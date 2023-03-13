@@ -131,11 +131,12 @@ async function addEmployee() {
             type: 'list',
             name: 'manager',
             message: 'Who is the employees manager?',
-            choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
+            // choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
+            choices: [1, 2, 3, 4, 5, 6],
         }
     ]) .then(function(answer){
         // console.log(answer);
-        connection.query("INSERT INTO role SET ?",{
+        connection.query("INSERT INTO employee SET ?",{
             first_name: answer.firstName,
             last_name: answer.lastName,
             role_id: answer.role,
