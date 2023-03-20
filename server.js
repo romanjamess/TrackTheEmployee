@@ -92,7 +92,7 @@ async function addRole() {
             type: 'list',
             name: 'department',
             message: 'Which department does the role belong to',
-            choices: ["Engineering", 2, 3, 4],
+            choices: ["Engineering", "Finance", "Legal", "Sales"],
         },
     ])
     .then(function(answer){
@@ -191,42 +191,51 @@ async function addEmployee() {
     
 }
 async function updateRole() {
-    const query = connection.query("SELECT * FROM employee")
-    const results = []
-    console.log(query)
-   
-//    console.log(allEmp)
+    const results = await db.promise().query('SELECT * FROM employee;')
+    console.table(results[0])
+    const emp = results[0]
+    let employeeList = []
+    emp.forEach( employee => {
+      employeeList.push( {
+        name: employee.first_name+", "+employee.last_name,
+        value: employee.id
+      })
+    });
+    const department = await db.promise().query('SELECT * FROM role;')
+    console.table(department[0])
+    const rol = department[0]
+    let departmentList = []
+    rol.forEach( role => {
+        departmentList.push( {
+            name: role.title + ", "+ role.salary,
+            value: role.id
+        })
+    });
     const answer = await inquirer.prompt([
         {
             type: 'list',
             name: 'roles',
             message: 'Which employee role do you want to update?',
-            // choices: allEmp
-            choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
-        },
-        {
-            type: 'input',
-            name: 'salary',
-            message: 'What is the salary of the role?',
+            choices: employeeList
+            // choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
         },
         {
             type: 'list',
             name: 'department',
             message: 'Which role do you want to sign the selected employee?',
-            choices: ["Sales Person", "Lead Engineer", "Acount Manager"],
+            choices: departmentList
+            // choices: ["Sales Person", "Lead Engineer", "Acount Manager", "Software Engineer","Accountant", "Legal Team Lead","Lawyer"],
         },
     ])
-    // .then(function(answer){
-    //     let 
-    //     // console.log(answer);
-    //     connection.query("UPDATE role SET title = {} ?",{
-    //         title: answer.list,
-    //         salary: answer.salary,
-    //         department_id: answer.department,
-    //     }),function (err) {
-    //         if (err) throw err;
-    //     }
-    // });
+    .then(function(answer){
+        // console.log(answer);
+        connection.query(`UPDATE role SET ?`,{
+            title: answer.roles,
+            salary: answer.department,
+        }),function (err) {
+            if (err) throw err;
+        }
+    });
 
 }
 //first query db for employees
