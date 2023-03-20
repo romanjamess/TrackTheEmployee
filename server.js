@@ -39,6 +39,9 @@ async function app() {
     if (answer.choice === 'Add an employee'){
         addEmployee()
     }
+    if (answer.choice === 'Update an employee role'){
+        updateRole()
+    }
 
 }
 async function viewDepartments() {
@@ -89,15 +92,28 @@ async function addRole() {
             type: 'list',
             name: 'department',
             message: 'Which department does the role belong to',
-            choices: [1, 2, 3, 4],
+            choices: ["Engineering", 2, 3, 4],
         },
     ])
     .then(function(answer){
+        let departmentId = 0
+        if(answer.department === "Engineering"){
+        departmentId = 1
+    }
+        if(answer.department === "Finance"){
+        departmentId = 2
+    }
+        if(answer.department === "Legal"){
+        departmentId = 3
+    }
+        if(answer.department === "Sales"){
+        departmentId = 4
+    }
         // console.log(answer);
         connection.query("INSERT INTO role SET ?",{
             title: answer.roles,
             salary: answer.salary,
-            department_id: answer.department,
+            department_id: departmentId,
         }),function (err) {
             if (err) throw err;
         }
@@ -110,7 +126,8 @@ async function addRole() {
 }
 
 async function addEmployee() {
-    const answer = await inquirer.prompt([
+    
+     await inquirer.prompt([
         {
             type: 'input',
             name: 'firstName',
@@ -125,32 +142,97 @@ async function addEmployee() {
             type: 'list',
             name: 'role',
             message: 'What is the employees role?',
-            choices: [1, 2, 3, 4],
+            choices: ["random", 2, 3, 4],
         },
         {
             type: 'list',
             name: 'manager',
             message: 'Who is the employees manager?',
-            // choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
-            choices: [1, 2, 3, 4, 5, 6],
+            choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
+            // choices: ["john doe", 2, 3, 4, 5, 6],
         }
+
     ]) .then(function(answer){
+        let managerId = 0 
+        if (answer.manager === "john doe"){
+            console.log("test")
+            managerId = 1
+        }
+        if (answer.manager === "Mike Chan"){
+            managerId = 2
+        }
+        if (answer.manager === "Ashley Rodriguez"){
+            managerId = 3
+        }
+        if (answer.manager === "Kevin Tupik"){
+            managerId = 4
+        }
+        if (answer.manager === "Kunal Singh"){
+            managerId = 5
+        }
+        if (answer.manager === "Malia Brown"){
+            managerId = 6
+        }
         // console.log(answer);
         connection.query("INSERT INTO employee SET ?",{
             first_name: answer.firstName,
             last_name: answer.lastName,
             role_id: answer.role,
-            manager_id: answer.manager,
+            manager_id: managerId,
         }),function (err) {
             if (err) throw err;
         }
     });
+    
   
     // const results = await db.promise().query('INSERT INTO department (first_name, last_name) SET (?)', answer.firstName, answer.lastName)
     // console.table(results)
     app()
     
 }
+async function updateRole() {
+    const query = connection.query("SELECT * FROM employee")
+    const results = []
+    console.log(query)
+   
+//    console.log(allEmp)
+    const answer = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'roles',
+            message: 'Which employee role do you want to update?',
+            // choices: allEmp
+            choices: ["John Doe", "Mike Chan", "Ashley Rodriguez", "Kevin Tupik", "Kunal Singh", "Malia Brown"],
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the salary of the role?',
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'Which role do you want to sign the selected employee?',
+            choices: ["Sales Person", "Lead Engineer", "Acount Manager"],
+        },
+    ])
+    // .then(function(answer){
+    //     let 
+    //     // console.log(answer);
+    //     connection.query("UPDATE role SET title = {} ?",{
+    //         title: answer.list,
+    //         salary: answer.salary,
+    //         department_id: answer.department,
+    //     }),function (err) {
+    //         if (err) throw err;
+    //     }
+    // });
+
+}
+//first query db for employees
+//get response from db
+//make an array of employees from db 
+//
 
 app()
 
