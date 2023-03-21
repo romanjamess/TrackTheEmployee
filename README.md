@@ -30,7 +30,7 @@
   <li>watch the mock up video below for demonstration</li>
   
   ## Mock up 
-  <a href= "https://drive.google.com/file/d/1hCcze7-iR0eetmVhmFYeRpvAGfQW9leg/view">
+  "https://drive.google.com/file/d/1hCcze7-iR0eetmVhmFYeRpvAGfQW9leg/view"
   
    
   ## license
