@@ -28,7 +28,9 @@
   <li>now open a intergrated terminal and run node server.js </li>
   <li>you will be prompted with options to choose from and questions</li>
   <li>watch the mock up video below for demonstration</li>
-  <a href= "https://drive.google.com/file/d/1hCcze7-iR0eetmVhmFYeRpvAGfQW9leg/view">Mock Up </a>
+  
+  ## Mock up 
+  <a href= "https://drive.google.com/file/d/1hCcze7-iR0eetmVhmFYeRpvAGfQW9leg/view">
   
    
   ## license
